@@ -1,0 +1,26 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: testapp-hpa
+spec:
+  # На какой объект нацелен HPA
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: testapp-deployment   
+  
+  # Границы масштабирования:
+  # минимальное и максимальное количество подов 
+  minReplicas: 1
+  maxReplicas: 10
+  
+  # Метрики и условия масштабирования
+  metrics:
+  - type: Resource
+    resource:
+      # Масштабирование по ОП      
+      name: memory        
+      target:
+        type: Utilization
+        # Целевой уровень утилизации - 80%
+        averageUtilization: 80 
